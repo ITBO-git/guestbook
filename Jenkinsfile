@@ -75,5 +75,24 @@ pipeline {
             }
         }
     }
+  post { 
+        always { 
+            emailext (attachLog: true, body: '본문', compressLog: true
+                    , recipientProviders: [buildUser()], subject: '제목', to: 's80196@gmail.com')
+
+        }
+        success { 
+            slackSend(tokenCredentialId: 'slack-token'
+                , channel: '#교육'
+                , color: 'good'
+                , message: "${JOB_NAME} (${BUILD_NUMBER}) itbo - 빌드가 성공적으로 끝났습니다. Details: (<${BUILD_URL} | here >)")
+        }
+        failure { 
+            slackSend(tokenCredentialId: 'slack-token'
+                , channel: '#교육'
+                , color: 'danger'
+                , message: "${JOB_NAME} (${BUILD_NUMBER}) it-bo 빌드가 실패하였습니다. Details: (<${BUILD_URL} | here >)")
+    }
+  }
 }
 
