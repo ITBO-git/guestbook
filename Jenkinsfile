@@ -76,11 +76,6 @@ pipeline {
         }
     }
   post { 
-        always { 
-            emailext (attachLog: true, body: '본문', compressLog: true
-                    , recipientProviders: [buildUser()], subject: '제목', to: 's80196@gmail.com')
-
-        }
         success { 
             slackSend(tokenCredentialId: 'slack-token'
                 , channel: '#교육'
